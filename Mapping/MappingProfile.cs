@@ -12,7 +12,7 @@ namespace MyDotnetProject.Mapping
         {
             // Domain to API Resource
             CreateMap<Make, MakeResource>();
-            //CreateMap<Make, KeyValueResource>();
+            CreateMap<Make, KeyValueResource>();
             CreateMap<Model, KeyValueResource>();
             CreateMap<Feature, KeyValueResource>();
             //Vehicle => VehicleResource
@@ -48,8 +48,8 @@ namespace MyDotnetProject.Mapping
                 }*/
 
                 // rewrite using LINQ (same logic as before)
-                var removedFeatures = v.Features.Where(f => !vr.Features.Contains(f.FeatureId));
-                foreach ( var f in v.Features )
+                var removedFeatures = v.Features.Where(f => !vr.Features.Contains(f.FeatureId)).ToList();
+                foreach ( var f in removedFeatures )
                     v.Features.Remove(f);
 
                 /*// Add new features
@@ -60,9 +60,9 @@ namespace MyDotnetProject.Mapping
 
                 // rewrite using LINQ (same logic as before)
                 var addedFeatures = vr.Features.Where(id => !v.Features.Any(f => f.FeatureId == id))
-                .Select(id => new VehicleFeature { FeatureId = id });
-                foreach ( var f in v.Features )
-                    v.Features.Remove(f);
+                .Select(id => new VehicleFeature { FeatureId = id }).ToList();
+                foreach ( var f in addedFeatures )
+                    v.Features.Add(f);
             });
         }
     }    

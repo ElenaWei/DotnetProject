@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using MyDotnetProject.Core;
 
 namespace MyDotnetProject.Persistence
 {

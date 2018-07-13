@@ -54,12 +54,17 @@
     "to-string-loader": "1.1.5",
     "typescript": "2.4.1",
     "url-loader": "0.5.9",
-    "webpack": "2.5.1",
+    "webpack": "^2.5.1",
+    "webpack-cli": "^3.0.8",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12"
   },
   "dependencies": {
-    "@angular/cli": "^6.0.8"
+    "@angular/cli": "^6.0.8",
+    "@types/underscore": "^1.8.8",
+    "ng2-toasty": "^4.0.3",
+    "ng6-toastr": "^6.0.0",
+    "underscore": "^1.9.1"
   }
 }

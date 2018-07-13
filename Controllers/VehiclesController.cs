@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyDotnetProject.Controllers.Resources;
 using MyDotnetProject.Models;
-using MyDotnetProject.Persistence;
+using MyDotnetProject.Core;
+using System.Collections.Generic;
 
 namespace MyDotnetProject.Controllers
 {
@@ -24,7 +25,7 @@ namespace MyDotnetProject.Controllers
 
         [HttpPost] // Create
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
-        {
+        {           
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -46,7 +47,7 @@ namespace MyDotnetProject.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")] // Update( Actual API becomes to "/api/vehicle/{id}" )
+        [HttpPut("{id}")] // Update( Actual API becomes to "/api/vehicles/{id}" )
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -73,7 +74,7 @@ namespace MyDotnetProject.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")] // Delete( Actual API becomes to "/api/vehicle/{id}" )
+        [HttpDelete("{id}")] // Delete( Actual API becomes to "/api/vehicles/{id}" )
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             // find vehicle -> remove from database -> saveChanges -> return same id
@@ -92,7 +93,7 @@ namespace MyDotnetProject.Controllers
             return Ok(id);
         }
 
-        [HttpGet("{id}")] // Delete( Actual API becomes to "/api/vehicle/{id}" )
+        [HttpGet("{id}")] // Get( Actual API becomes to "/api/vehicles/{id}" )
         public async Task<IActionResult> GetVehicle(int id)
         {
             // find vehicle -> remove from database -> saveChanges -> return same id
@@ -105,6 +106,14 @@ namespace MyDotnetProject.Controllers
 
             var VehicleResource = mapper.Map<Vehicle, VehicleResource>(vehicle);
             return Ok(VehicleResource);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<VehicleResource>> GetVehicles() 
+        {
+            var vehicles = await repository.GetVehicles();
+            
+            return mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
         }
 
     }

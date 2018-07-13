@@ -1,6 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyDotnetProject.Models;
+using MyDotnetProject.Core;
+using System.Collections.Generic;
+using MyDotnetProject.Controllers.Resources;
 
 namespace MyDotnetProject.Persistence
 {
@@ -34,9 +37,12 @@ namespace MyDotnetProject.Persistence
             context.Remove(vehicle);
         }
 
-        public Task<Vehicle> GetVehicle(int id)
-        {
-            throw new System.NotImplementedException();
+        public async Task<IEnumerable<Vehicle>> GetVehicles()
+        {    
+           return await context.Vehicles
+           .Include(v => v.Features).ThenInclude(vf => vf.Feature)
+            .Include(v => v.Model).ThenInclude(m => m.Make)
+             .ToListAsync();
         }
     }
 }

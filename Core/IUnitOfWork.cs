@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace MyDotnetProject.Persistence
+namespace MyDotnetProject.Core
 {
     public interface IUnitOfWork
     {
