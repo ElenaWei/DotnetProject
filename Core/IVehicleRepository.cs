@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyDotnetProject.Controllers.Resources;
+using MyDotnetProject.Core.Models;
 using MyDotnetProject.Models;
 
 namespace MyDotnetProject.Core
@@ -10,6 +10,6 @@ namespace MyDotnetProject.Core
          Task<Vehicle> GetVehicle(int id, bool includeRelated = true);
          void Add(Vehicle Vehicle);
          void Remove(Vehicle vehicle);
-        Task<IEnumerable<Vehicle>> GetVehicles();
+        Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery filter);
     }
 }

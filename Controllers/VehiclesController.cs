@@ -7,6 +7,7 @@ using MyDotnetProject.Controllers.Resources;
 using MyDotnetProject.Models;
 using MyDotnetProject.Core;
 using System.Collections.Generic;
+using MyDotnetProject.Core.Models;
 
 namespace MyDotnetProject.Controllers
 {
@@ -109,11 +110,12 @@ namespace MyDotnetProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<VehicleResource>> GetVehicles() 
+        public async Task<IEnumerable<VehicleResource>> GetVehicles(VehicleQueryResource filterResource) 
         {
-            var vehicles = await repository.GetVehicles();
+            var filter = mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
+            var filterResult = await repository.GetVehicles(filter);
             
-            return mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
+            return mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(filterResult);
         }
 
     }

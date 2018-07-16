@@ -1,12 +1,43 @@
-<h1>Vehicle list</h1>
+<h2>All the Vehicles Here</h2>
+<div class="well">
+  <div class="form-group">
+    <label for="make">Make</label>
+    <select id="make" class="form-control" [(ngModel)]="query.makeId" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let m of makes" value="{{m.id}}">{{m.name}}</option>
+    </select>
+  </div>
+  <button class="btn btn-defalut" (click)="resetFilter()">Reset</button>
+</div>
+
 <table class="table">
   <thead>
-    <tr>
-      <th>
-        <div>
-
+    <tr>     
+      <th *ngFor="let c of columns" >
+        <div *ngIf="c.isSortable" (click)= "sortBy(c.key)" >
+            {{ c.title }}
+            <i *ngIf="query.sortBy === c.key"
+              class="fa"
+              [class.fa-sort-asc]="query.isSortAscending"
+              [class.fa-sort-desc]="!query.isSortAscending">
+            </i>
         </div>
+        <div *ngIf="!c.isSortable" >
+          {{ c.title }}
+        </div>  
       </th>
+      <th>View Vehicle</th>
     </tr>
   </thead>
+  <tbody>
+    <tr *ngFor="let v of vehicles">
+      <td>{{ v.id }}</td>
+      <td>{{ v.make.name }}</td>
+      <td>{{ v.model.name }}</td>
+      <td>{{ v.contact.name }}</td>
+      <td>
+        <a [routerLink]="['/vehicles/', v.id]">View</a>
+      </td>
+    </tr>
+  </tbody>
 </table>

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using MyDotnetProject.Controllers.Resources;
+using MyDotnetProject.Core.Models;
 using MyDotnetProject.Models;
 
 namespace MyDotnetProject.Mapping
@@ -15,6 +16,7 @@ namespace MyDotnetProject.Mapping
             CreateMap<Make, KeyValueResource>();
             CreateMap<Model, KeyValueResource>();
             CreateMap<Feature, KeyValueResource>();
+            
             //Vehicle => VehicleResource
             CreateMap<Vehicle, SaveVehicleResource>()
             .ForMember(vr => vr.Contact, opt => opt.MapFrom(v => new ContactResource {
@@ -29,6 +31,7 @@ namespace MyDotnetProject.Mapping
                 new KeyValueResource{ Id = vf.Feature.Id, Name = vf.Feature.Name})));
 
             // API Resource to Domain
+            CreateMap<VehicleQueryResource, VehicleQuery>();
             // VehicleResource => Vehicle
             CreateMap<SaveVehicleResource, Vehicle>()
             .ForMember(v => v.Id, opt => opt.Ignore())

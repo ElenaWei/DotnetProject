@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using MyDotnetProject.Models;
 using MyDotnetProject.Core;
 using System.Collections.Generic;
-using MyDotnetProject.Controllers.Resources;
+using MyDotnetProject.Core.Models;
+using System.Linq;
+using System.Linq.Expressions;
+using System;
+using MyDotnetProject.Extensions;
 
 namespace MyDotnetProject.Persistence
 {
@@ -17,14 +21,14 @@ namespace MyDotnetProject.Persistence
         }
         public async Task<Vehicle> GetVehicle(int id, bool includeRelated = true)
         {
-            if(!includeRelated)
+            if (!includeRelated)
             {
                 return await context.Vehicles.FindAsync(id);
             }
-           return await context.Vehicles
-           .Include(v => v.Features).ThenInclude(vf => vf.Feature)
-            .Include(v => v.Model).ThenInclude(m => m.Make)
-             .SingleOrDefaultAsync(v => v.Id == id);
+            return await context.Vehicles
+            .Include(v => v.Features).ThenInclude(vf => vf.Feature)
+             .Include(v => v.Model).ThenInclude(m => m.Make)
+              .SingleOrDefaultAsync(v => v.Id == id);
         }
 
         public void Add(Vehicle vehicle)
@@ -37,12 +41,49 @@ namespace MyDotnetProject.Persistence
             context.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles()
-        {    
-           return await context.Vehicles
+        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj)
+        {
+            // get all the vehicles in the database
+            var query = context.Vehicles
            .Include(v => v.Features).ThenInclude(vf => vf.Feature)
-            .Include(v => v.Model).ThenInclude(m => m.Make)
-             .ToListAsync();
+            .Include(v => v.Model).ThenInclude(m => m.Make).AsQueryable();
+
+            // filter by the given makeId
+            if (queryObj.MakeId.HasValue)
+            {
+                query = query.Where(v => v.Model.MakeId == queryObj.MakeId.Value);
+            }
+
+            // sort by the given info
+            /*
+            if (queryObj.SortBy == "make")
+                query = (queryObj.IsSortAsceding) ? query.OrderBy(v => v.Model.Make.Name) :
+                query.OrderByDescending(v => v.Model.Make.Name);
+            if (queryObj.SortBy == "model")
+                query = (queryObj.IsSortAsceding) ? query.OrderBy(v => v.Model.Name) :
+                query.OrderByDescending(v => v.Model.Name);
+            if (queryObj.SortBy == "contactName")
+                query = (queryObj.IsSortAsceding) ? query.OrderBy(v => v.ContactName) :
+                query.OrderByDescending(v => v.ContactName);
+            if (queryObj.SortBy == "id")
+                query = (queryObj.IsSortAsceding) ? query.OrderBy(v => v.Id) :
+                query.OrderByDescending(v => v.Id);
+            */
+
+            // Optimize duplicate simailar code above using Expression<Func<Vehicle, object>> exp          
+            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
+            {
+                ["make"] = v => v.Model.Make.Name,
+                ["model"] = v => v.Model.Name,
+                ["contactName"] = v => v.ContactName,
+                //["id"] = v => v.Id,
+            };
+            query = query.ApplyOrdering(queryObj, columnsMap);
+            
+            return await query.ToListAsync();
         }
+
+       
+
     }
 }
