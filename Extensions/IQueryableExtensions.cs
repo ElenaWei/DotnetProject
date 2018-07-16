@@ -9,7 +9,7 @@ namespace MyDotnetProject.Extensions
 {
     public static class IQueryableExtensions
     {
-    public static IQueryable<T> ApplyOrdering<T> (this IQueryable<T> query, IQueryObject queryObj, Dictionary<string, Expression<Func<T, object>>> columnsMap) 
+        public static IQueryable<T> ApplyOrdering<T> (this IQueryable<T> query, IQueryObject queryObj, Dictionary<string, Expression<Func<T, object>>> columnsMap) 
         {   
             // edge case: id not exist, or parameters are not assigned.
              if (String.IsNullOrWhiteSpace(queryObj.SortBy) || !columnsMap.ContainsKey(queryObj.SortBy))
@@ -20,5 +20,23 @@ namespace MyDotnetProject.Extensions
             else
                 return query.OrderByDescending(columnsMap[queryObj.SortBy]);
         }
+
+        public static IQueryable<T> ApplyPaging<T> (this IQueryable<T> query, IQueryObject queryObj ) 
+        {   
+            if (queryObj.Page <= 0) // edge case: parameter page less than or equal to 0
+            {
+                queryObj.Page = 1;
+            }
+                
+            if (queryObj.PageSize <= 0) // edge case: parameter pageSize less than or equal to 0
+            {
+                queryObj.PageSize = 10;
+            }
+                
+            return query.Skip((queryObj.Page - 1) * queryObj.PageSize).Take(queryObj.PageSize);
+        }
+
     }
+
+   
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System;
 using MyDotnetProject.Extensions;
+using MyDotnetProject.Controllers.Resources;
 
 namespace MyDotnetProject.Persistence
 {
@@ -41,8 +42,9 @@ namespace MyDotnetProject.Persistence
             context.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj)
+        public async Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery queryObj)
         {
+            var result = new QueryResult<Vehicle>();
             // get all the vehicles in the database
             var query = context.Vehicles
            .Include(v => v.Features).ThenInclude(vf => vf.Feature)
@@ -79,11 +81,16 @@ namespace MyDotnetProject.Persistence
                 //["id"] = v => v.Id,
             };
             query = query.ApplyOrdering(queryObj, columnsMap);
-            
-            return await query.ToListAsync();
-        }
 
-       
+            //implement pagination
+            result.TotalItems = await query.CountAsync(); // count total items get from database
+        
+            query = query.ApplyPaging(queryObj); // apply pagination
+
+            result.Items = await query.ToListAsync();
+            
+            return result;
+        }
 
     }
 }

@@ -10,6 +10,6 @@ namespace MyDotnetProject.Core
          Task<Vehicle> GetVehicle(int id, bool includeRelated = true);
          void Add(Vehicle Vehicle);
          void Remove(Vehicle vehicle);
-        Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery filter);
+        Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery filter);
     }
 }

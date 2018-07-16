@@ -1,4 +1,3 @@
-import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,8 +13,11 @@ import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { VehicleService } from './services/vehicle.service';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 
 @NgModule({
+    bootstrap: [ AppComponent ],
     declarations: [
         AppComponent,
         NavMenuComponent,
@@ -23,7 +25,8 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
         FetchDataComponent,
         HomeComponent,
         VehicleFormComponent,
-        VehicleListComponent
+        VehicleListComponent,
+        PaginationComponent,
     ],
     imports: [
         CommonModule,
@@ -40,6 +43,9 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }
         ])
+    ],
+    exports: [
+        PaginationComponent
     ],
     providers: [
         VehicleService
