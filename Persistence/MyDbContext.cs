@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyDotnetProject.Core.Models;
 using MyDotnetProject.Models;
 
 namespace MyDotnetProject.Persistence
@@ -9,6 +10,7 @@ namespace MyDotnetProject.Persistence
         public DbSet<Model> Models { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
             

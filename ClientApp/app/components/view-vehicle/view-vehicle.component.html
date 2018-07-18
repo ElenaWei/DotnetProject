@@ -1,0 +1,53 @@
+<h1>Vehicle</h1>
+
+<div>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab" > Vehicle </a>
+    </li>
+    <li role="presentation">
+      <a href="#photos" aria-controls="photos" role="tab" data-toggle="tab"> Photos </a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content" *ngIf="vehicle" >
+    <div class="tab-pane active" role="tabpanel" id="basic">
+      <h2>Basics</h2>
+        <ul class="list-group">
+          <li class="list-group-item">Make: {{ vehicle.make.name }}</li>
+          <li class="list-group-item">Model: {{ vehicle.model.name }}</li>
+          <li class="list-group-item">Registered: {{ vehicle.isRegistered ? 'Yes' : "No" }}</li>
+        </ul>
+      
+      <h2>Features</h2>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let f of vehicle.features" >{{ f.name }}</li>
+        </ul>
+      
+      <h2>Contact Info</h2>
+        <ul class="list-group">
+          <li class="list-group-item">Contact Name: {{ vehicle.contact.name }}</li>
+          <li class="list-group-item">Contact Phone: {{ vehicle.contact.phone }}</li>
+          <li class="list-group-item">Contact Email: {{ vehicle.contact.email }}</li>
+        </ul>
+      <br/>
+
+      <p>
+        <a class="btn btn-primary" [routerLink]="['/vehicles/edit', vehicle.id]">Edit</a>
+        <button class="btn btn-danger" (click)="delete()">Delete</button>
+        <a class="btn btn-default" [routerLink]="['/vehicles']">View All Vehicles</a>
+      </p>
+    </div>
+
+    <!-- Photos tab -->
+    <div class="tab-pane" role="tabpanel" id="photos">
+      <h2>Photos</h2>
+      <input type="file" (change)="uploadPhoto()" #fileInput>
+      <img *ngFor="let photo of photos" src="/uploads/{{photo.fileName}}" class="img-thumbnail" width="300" height="300" />
+    </div>
+
+  </div>
+
+</div>

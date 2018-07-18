@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MyDotnetProject.Core.Models;
 
 namespace MyDotnetProject.Models
 {
@@ -24,10 +25,12 @@ namespace MyDotnetProject.Models
         public string ContactPhone { get; set; }
         public DateTime LastUpdate { get; set; }
         public ICollection<VehicleFeature> Features { get; set; }
+        public ICollection<Photo> Photos { get; set; }
 
         public Vehicle()
         {
-           Features = new Collection<VehicleFeature>(); 
+           Features = new Collection<VehicleFeature>();
+           Photos = new Collection<Photo>();
         }
     }
 }

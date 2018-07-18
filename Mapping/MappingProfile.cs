@@ -12,6 +12,7 @@ namespace MyDotnetProject.Mapping
         public MappingProfile()
         {
             // Domain to API Resource
+            CreateMap<Photo, PhotoResource>();
             CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>)); // for Generic
             CreateMap<Make, MakeResource>();
             CreateMap<Make, KeyValueResource>();
