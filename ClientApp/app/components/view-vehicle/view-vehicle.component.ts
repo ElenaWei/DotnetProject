@@ -1,12 +1,18 @@
+import { BrowserXhr } from '@angular/http';
+import { ProgressService } from './../../services/progress.service';
 import { ToastyService } from 'ng2-toasty';
 import { PhotoService } from './../../services/photo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VehicleService } from './../../services/vehicle.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-view-vehicle',
   templateUrl: './view-vehicle.component.html',
+  // providers: [
+  //   { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+  //   ProgressService
+  // ],
   styleUrls: ['./view-vehicle.component.css']
 })
 export class ViewVehicleComponent implements OnInit {
@@ -19,11 +25,14 @@ export class ViewVehicleComponent implements OnInit {
   progress: any;
 
   constructor(
+    private zone : NgZone,
     private vehicleService : VehicleService,
     private router : Router,
     private route : ActivatedRoute,
     private photoService : PhotoService,
-    private toasty : ToastyService) { 
+    private toasty : ToastyService,
+    private progressService : ProgressService) { 
+
       route.params.subscribe ( p => {
         this.vehicleId = +p['id'];
         // validation check
@@ -32,6 +41,7 @@ export class ViewVehicleComponent implements OnInit {
           return;
         }
       });
+
     }
 
   ngOnInit() {
@@ -51,11 +61,18 @@ export class ViewVehicleComponent implements OnInit {
       });
 
   }
-  uploadPhoto() {
-    var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
   
-    var file = nativeElement.files ? nativeElement.files[0] : null;
+  uploadPhoto() {
     
+    this.progressService.startTracking().subscribe(progress => {
+      console.log(progress);
+      this.zone.run(() => this.progress = progress);
+    }, () => {this.progress = null});
+  
+    var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+    var file = nativeElement.files ? nativeElement.files[0] : null;
+    nativeElement.value = ''; // clean the name after upload complete
+
     this.photoService.upload(this.vehicleId, file)
         .subscribe(photo => {console.log(photo);
           this.photos.push(photo);},
@@ -67,8 +84,7 @@ export class ViewVehicleComponent implements OnInit {
               showClose: true,
               timeout: 5000
             })
-          });
-    
+          });  
   }
 
   delete() {
