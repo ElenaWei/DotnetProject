@@ -64,9 +64,11 @@
     "@angular/cli": "^6.0.8",
     "@types/auth0-js": "^8.11.2",
     "@types/underscore": "^1.8.8",
+    "angular2-chartjs": "^0.5.1",
     "angular2-jwt": "^0.2.3",
     "auth0-js": "^9.7.2",
     "auth0-lock": "^11.7.2",
+    "chart.js": "^2.7.2",
     "ng2-toasty": "^4.0.3",
     "ng6-toastr": "^6.0.0",
     "underscore": "^1.9.1"

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, BrowserXhr } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { ToastyModule } from 'ng2-toasty';
+import { ChartModule } from 'angular2-chartjs';
 
 import { PhotoService } from './services/photo.service';
 import { VehicleService } from './services/vehicle.service';
@@ -21,6 +22,7 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.com
 import { ProgressService,  BrowserXhrWithProgress } from './services/progress.service';
 import { AuthService } from './services/auth.service';
 import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
+import { AdminComponent } from './components/admin.component';
 //import { AppErroHandler } from './app.error-handler';
 
 @NgModule({
@@ -34,10 +36,12 @@ import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
         VehicleFormComponent,
         VehicleListComponent,
         PaginationComponent,
-        ViewVehicleComponent
+        ViewVehicleComponent,
+        AdminComponent
     ],
     imports: [
         CommonModule,
+        ChartModule,
         ToastyModule.forRoot(),
         HttpModule,
         FormsModule,
@@ -48,7 +52,7 @@ import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
             { path: 'vehicles/:id', component: ViewVehicleComponent},
             { path: 'vehicles', component: VehicleListComponent},
             { path: 'home', component: HomeComponent },
-            { path: 'counter', component: CounterComponent },
+            { path: 'admin', component: AdminComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }
         ])

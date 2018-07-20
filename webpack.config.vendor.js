@@ -16,6 +16,8 @@ const treeShakableModules = [
     'zone.js',
     'angular2-jwt',
     'auth0-lock',
+    'angular2-chartjs',
+    'chart.js'
 ];
 const nonTreeShakableModules = [
     'bootstrap',
