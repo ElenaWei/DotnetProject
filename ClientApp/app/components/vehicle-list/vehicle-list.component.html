@@ -1,4 +1,7 @@
 <h2>All the Vehicles Here</h2>
+<p *ngIf="auth.isAuthenticated()" >
+  <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Vehicle</a>
+</p>
 <div class="well">
   <div class="form-group">
     <label for="make">Make</label>

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyDotnetProject.Persistence;
 using MyDotnetProject.Core;
 using MyDotnetProject.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MyDotnetProject
 {
@@ -27,17 +28,29 @@ namespace MyDotnetProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
             services.AddAutoMapper();
 
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             // add framework services.
             services.AddMvc();
+
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://intelliswift-elena-dotnet.auth0.com/";
+                options.Audience = "https://api.elena.com";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +71,16 @@ namespace MyDotnetProject
 
             //apply css styles and js effect to our application
             app.UseStaticFiles();
-            
+
+            // 2. Enable authentication middleware
+            app.UseAuthentication();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             app.UseMvc(routes =>
             {

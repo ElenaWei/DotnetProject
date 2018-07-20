@@ -1,6 +1,4 @@
 
-
-
 import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,7 +19,9 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { ProgressService,  BrowserXhrWithProgress } from './services/progress.service';
-import { AppErroHandler } from './app.error-handler';
+import { AuthService } from './services/auth.service';
+import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
+//import { AppErroHandler } from './app.error-handler';
 
 @NgModule({
     bootstrap: [ AppComponent ],
@@ -61,7 +61,9 @@ import { AppErroHandler } from './app.error-handler';
         //{ provide: ErrorHandler, useClass: AppErroHandler},
         VehicleService,
         PhotoService,
-        ProgressService 
+        ProgressService,
+        AuthService,
+        AUTH_PROVIDERS
     ]
 })
 export class AppModuleShared {

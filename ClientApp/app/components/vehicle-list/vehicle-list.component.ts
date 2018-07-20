@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { PaginationComponent } from './../shared/pagination/pagination.component';
 import { KeyValuePair, Vehicle } from './../../models/vehicle';
 import { VehicleService } from './../../services/vehicle.service';
@@ -25,7 +26,7 @@ export class VehicleListComponent implements OnInit {
     { title: 'View Details'}
   ];
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(private vehicleService: VehicleService, private auth: AuthService) { }
 
   ngOnInit() {
     this.vehicleService.getMakes().subscribe(makes => this.makes = makes);

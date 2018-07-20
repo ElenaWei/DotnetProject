@@ -8,6 +8,7 @@ using MyDotnetProject.Models;
 using MyDotnetProject.Core;
 using System.Collections.Generic;
 using MyDotnetProject.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyDotnetProject.Controllers
 {
@@ -25,6 +26,7 @@ namespace MyDotnetProject.Controllers
         }
 
         [HttpPost] // Create
+        //[Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {           
             if (!ModelState.IsValid)
@@ -49,6 +51,7 @@ namespace MyDotnetProject.Controllers
         }
 
         [HttpPut("{id}")] // Update( Actual API becomes to "/api/vehicles/{id}" )
+        //[Authorize]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -76,6 +79,7 @@ namespace MyDotnetProject.Controllers
         }
 
         [HttpDelete("{id}")] // Delete( Actual API becomes to "/api/vehicles/{id}" )
+        //[Authorize]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             // find vehicle -> remove from database -> saveChanges -> return same id

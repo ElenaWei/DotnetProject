@@ -9,6 +9,13 @@ namespace MyDotnetProject.Extensions
 {
     public static class IQueryableExtensions
     {
+        public static IQueryable<Vehicle> ApplyFiltering (this IQueryable<Vehicle> query, VehicleQuery queryObj) {
+             if (queryObj.MakeId.HasValue)         
+                query = query.Where(v => v.Model.MakeId == queryObj.MakeId.Value);
+            if (queryObj.ModelId.HasValue)
+                query = query.Where(v => v.ModelId == queryObj.ModelId);
+            return query;
+        }
         public static IQueryable<T> ApplyOrdering<T> (this IQueryable<T> query, IQueryObject queryObj, Dictionary<string, Expression<Func<T, object>>> columnsMap) 
         {   
             // edge case: id not exist, or parameters are not assigned.

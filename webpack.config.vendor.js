@@ -14,6 +14,8 @@ const treeShakableModules = [
     '@angular/platform-browser-dynamic',
     '@angular/router',
     'zone.js',
+    'angular2-jwt',
+    'auth0-lock',
 ];
 const nonTreeShakableModules = [
     'bootstrap',

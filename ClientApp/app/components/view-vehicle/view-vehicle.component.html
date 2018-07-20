@@ -1,5 +1,5 @@
-<h1>Vehicle</h1>
 
+<h1>Vehicle</h1>
 <div>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -35,8 +35,8 @@
       <br/>
 
       <p>
-        <a class="btn btn-primary" [routerLink]="['/vehicles/edit', vehicle.id]">Edit</a>
-        <button class="btn btn-danger" (click)="delete()">Delete</button>
+        <a *ngIf="auth.isAuthenticated()" class="btn btn-primary" [routerLink]="['/vehicles/edit', vehicle.id]">Edit</a>
+        <button  *ngIf="auth.isAuthenticated()" class="btn btn-danger" (click)="delete()">Delete</button>
         <a class="btn btn-default" [routerLink]="['/vehicles']">View All Vehicles</a>
       </p>
     </div>

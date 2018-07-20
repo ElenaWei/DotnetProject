@@ -47,14 +47,10 @@ namespace MyDotnetProject.Persistence
             var result = new QueryResult<Vehicle>();
             // get all the vehicles in the database
             var query = context.Vehicles
-           .Include(v => v.Features).ThenInclude(vf => vf.Feature)
             .Include(v => v.Model).ThenInclude(m => m.Make).AsQueryable();
 
             // filter by the given makeId
-            if (queryObj.MakeId.HasValue)
-            {
-                query = query.Where(v => v.Model.MakeId == queryObj.MakeId.Value);
-            }
+           query = query.ApplyFiltering(queryObj);
 
             // sort by the given info
             /*
